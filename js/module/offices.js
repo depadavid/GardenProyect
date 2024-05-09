@@ -31,3 +31,22 @@ export const getOfficesByCode = async(code) =>{
     let dataClients = await res.json();
     return dataClients;
 }
+
+// MULTITABLA
+// 6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
+async function getOficinasConClientesPorCiudad(ciudad) {
+    const clientes = await getClientesPorCiudad(ciudad)
+    
+    const data = clientes.map(async ({code_employee_sales_manager}) =>{
+        const empleado = await getEmpleadoPorId(code_employee_sales_manager)
+        const oficina = await getOficinaPorId(empleado[0].code_office)
+
+        return {
+            "office_address": oficina[0].address1
+        }
+    })
+
+    console.log(await Promise.all(data));
+}
+
+getOficinasConClientesPorCiudad("Fuenlabrada")

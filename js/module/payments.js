@@ -22,3 +22,14 @@ async function getClientesPagosMayorA2008() {
 };
 
 // getClientesPagosMayorA2008()
+
+// 13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
+async function getPagosPaypal() {
+    const response = await fetch("http://localhost:5502/payments?payment=PayPal")
+    const pagos = await response.json()
+    const pagosRealizados = pagos.filter(({date_payment}) => pedidosPorAno(date_payment, 2008))
+
+    console.log(pagosRealizados);
+}
+
+// getPagosPaypal()

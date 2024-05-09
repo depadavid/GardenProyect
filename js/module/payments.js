@@ -33,3 +33,22 @@ async function getPagosPaypal() {
 }
 
 // getPagosPaypal()
+
+// 14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
+
+async function getFormasDePago() {
+    const pagos = await getPagos()
+    const formasDePago = []
+
+    pagos.forEach(pago => {
+        let { payment } = pago
+
+        if (!formasDePago.includes(payment)) {
+            formasDePago.push(payment)
+        }
+    })
+
+    console.log(formasDePago);
+}
+
+// getFormasDePago()

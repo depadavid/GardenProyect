@@ -6,16 +6,16 @@
   "type": "module",
 
   "scripts": {
-    "start-all": "npm run clients & npm run employees & npm run gama & npm run offices & npm run payments & npm run products & npm run request_details & npm run requests",
-    "dev": "node --watch js/main.js -p",
-    "clients": "json-server js/db/clients.json -p 5501",
-    "employees": "json-server js/db/employees.json -p 5502",
-    "gama": "json-server js/db/gama.json -p 5503",
-    "offices": "json-server js/db/offices.json -p 5504",
-    "payments": "json-server js/db/payments.json -p 5505",
-    "products": "json-server js/db/products.json -p 5506 ",
-    "request_details": "json-server js/db/request_details.json -p 5507",
-    "requests": "json-server js/db/requests.json -p 5508"
+    "start-all": "npm run clients & npm run employes & npm run gama & npm run offices & npm run payments & npm run product & npm run request_details & npm run requests & npm run dev",
+    "dev": "node --watch js/main.js",
+    "clients": "json-server -h  172.16.101.146  js/db/clients.json -p 5471",
+    "employes": "json-server -h  172.16.101.146  js/db/employes.json -p 5472 ",
+    "gama": "json-server -h  172.16.101.146  js/db/gama.json -p 5473",
+    "offices": "json-server -h  172.16.101.146  js/db/offices.json -p 5474",
+    "payments": "json-server -h  172.16.101.146  js/db/payments.json -p 5475",
+    "product": "json-server -h  172.16.101.146  js/db/product.json -p 5476",
+    "request_details": "json-server -h  172.16.101.146  js/db/request_details.json -p 5477",
+    "requests": "json-server -h  172.16.101.146  js/db/requests.json -p 5478"
   },
   "keywords": [],
   "author": "",

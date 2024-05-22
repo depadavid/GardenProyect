@@ -4,7 +4,7 @@ import { getAllEmployeeNames } from "./employees.js"
 // 1. Devuelve un listado con el código de oficina y la ciudad 
 // donde hay oficinas.
 export const getAllOficceAndCodeCity = async () => {
-    let res = await fetch("http://172.16.101.146:5534/offices")
+    let res = await fetch("http://172.16.101.146:5474/offices")
     let data = await res.json();
     let dataUpdate = data.map(val => {
         return {
@@ -16,7 +16,7 @@ export const getAllOficceAndCodeCity = async () => {
 }
 // 2. Devuelve un listado con la ciudad y el teléfono de las oficinas de España.
 export const getAllOficceCityAndMovil = async () => {
-    let res = await fetch("http://172.16.101.146:5534/offices?country=España")
+    let res = await fetch("http://172.16.101.146:5474/offices?country=España")
     let data = await res.json();
     let dataUpdate = data.map(val => {
         return {
@@ -29,7 +29,7 @@ export const getAllOficceCityAndMovil = async () => {
 
 //obtener el nombre de la ciudad de la oficina
 export const getAllOfficesByCity = async (codeOffice) => {
-    let res = await fetch(`http://172.16.101.146:5534/offices?code_office=${codeOffice}`)
+    let res = await fetch(`http://172.16.101.146:5474/offices?code_office=${codeOffice}`)
     let data = await res.json();
     return data;
 }
@@ -37,14 +37,14 @@ export const getAllOfficesByCity = async (codeOffice) => {
 
 // Obtener datos de todos los clientes
 export const getAllOffices = async () => {
-    let resOffices = await fetch("http://172.16.101.146:5534/offices");
+    let resOffices = await fetch("http://172.16.101.146:5474/offices");
     return await resOffices.json();
 };
 
 
 //6. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
 export const getAllOfficesAddressWithClientsInFuenlabrada = async () => {
-    let res = await fetch("http://172.16.101.146:5534/offices")
+    let res = await fetch("http://172.16.101.146:5474/offices")
     let offices = await res.json();
     let dataUpdate = [];
     for (let i = 0; i < offices.length; i++) {

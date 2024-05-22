@@ -7,7 +7,7 @@ import { getAllProductsByCode } from "./product.js"
 
 //6. Devuelve un listado con el nombre de los todos los clientes españoles. 
 export const getAllSpanishClients = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let data = await res.json();
     let dataUpdate = [];
     data.forEach(val => {
@@ -23,7 +23,7 @@ export const getAllSpanishClients = async () => {
 //Devuelve un listado con todos los clientes que sean de la ciudad de Madrid
 //y cuyo representante de ventas tenga el código de empleado 11 o 30. 
 export const getAllMadridClients = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients?region=Madrid")
+    let res = await fetch("http://172.16.101.146:5471/clients?region=Madrid")
     let data = await res.json();
     let dataUpdate = [];
     data.forEach(val => {
@@ -38,7 +38,7 @@ export const getAllMadridClients = async () => {
 //1. Obten un listado con el nombre de cada cliente y el nombre y apellido de
 //su representante de ventas. 
 export const getAllClientsAndSalesManagersName = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let client = await res.json();
     for (let i = 0; i < client.length; i++) {
         let { ...clientUpdate } = client[i];
@@ -57,7 +57,7 @@ export const getAllClientsAndSalesManagersName = async () => {
 //2. Muestra el nombre de los clientes que hayan realizado pagos
 //junto con el nombre de sus representantes de ventas. 
 export const getAllClientsAndSalesManagersNameAndIfThereIsPayments = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let client = await res.json();
     let dataUpdated = [];
     for (let i = 0; i < client.length; i++) {
@@ -81,7 +81,7 @@ export const getAllClientsAndSalesManagersNameAndIfThereIsPayments = async () =>
 //3. Muestra el nombre de los clientes que no hayan realizado pagos
 //junto con el nombre de sus representantes de ventas. 
 export const getAllClientsAndSalesManagersNameAndIfThereIsntPayments = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let client = await res.json();
     let dataUpdated = [];
     for (let i = 0; i < client.length; i++) {
@@ -105,7 +105,7 @@ export const getAllClientsAndSalesManagersNameAndIfThereIsntPayments = async () 
 //4. Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes
 //junto con la ciudad de la oficina a la que pertenece el representante. 
 export const getAllClientsAndSalesManagersNameAndIfThereIsPaymentsAndOfficeCity = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let client = await res.json();
     let dataUpdated = [];
     for (let i = 0; i < client.length; i++) {
@@ -132,7 +132,7 @@ export const getAllClientsAndSalesManagersNameAndIfThereIsPaymentsAndOfficeCity 
 //5. Devuelve el nombre de los clientes que no hayan hecho pagos y el nombre de sus representantes
 //junto con la ciudad de la oficina a la que pertenece el representante. 
 export const getAllClientsAndSalesManagersNameAndIfThereIsntPaymentsAndOfficeCity = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let client = await res.json();
     let dataUpdated = [];
     for (let i = 0; i < client.length; i++) {
@@ -157,7 +157,7 @@ export const getAllClientsAndSalesManagersNameAndIfThereIsntPaymentsAndOfficeCit
 
 //Obtener clientes en fuenlabrada
 export const getAllClientsInFuenlabrada = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients?city=Fuenlabrada")
+    let res = await fetch("http://172.16.101.146:5471/clients?city=Fuenlabrada")
     let data = await res.json();
     return data;
 }
@@ -165,7 +165,7 @@ export const getAllClientsInFuenlabrada = async () => {
 // 7. Devuelve el nombre de los clientes y el nombre de sus representantes
 // junto con la ciudad de la oficina a la que pertenece el representante. 
 export const getAllClientsAndSalesManagersNameWithTheCItyOfTheOffice = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let client = await res.json();
     for (let i = 0; i < client.length; i++) {
         // Actualiza la data clientes eliminando identificadores que no queremos
@@ -220,14 +220,14 @@ export const getAllClientsAndSalesManagersNameWithTheCItyOfTheOffice = async () 
 
 //obtener el cliente por el codigo
 export const getAllClientsByCode = async (code) => {
-    let res = await fetch(`http://172.16.101.146:5531/clients?client_code=${code}`)
+    let res = await fetch(`http://172.16.101.146:5471/clients?client_code=${code}`)
     let data = await res.json();
     return data;
 }
 
 // 11. Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
 export const getAllProductGamaThatAClientRequest = async () => {
-    let clientes = await fetch("http://172.16.101.146:5531/clients").then(response => response.json());
+    let clientes = await fetch("http://172.16.101.146:5471/clients").then(response => response.json());
     let ordenes = [];
     // Obtener todas las órdenes por cada cliente
     for (const val of clientes) {
@@ -273,7 +273,7 @@ export const getAllProductGamaThatAClientRequest = async () => {
 
 
 export const getAllProductGamaThatAClientRequest1 = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients");
+    let res = await fetch("http://172.16.101.146:5471/clients");
     let data = await res.json();
     let dataUpdate = [];
 
@@ -308,7 +308,7 @@ export const getAllProductGamaThatAClientRequest1 = async () => {
 
 //1. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago. O
 export const getAllClientsWhoHaventPaid = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let data = await res.json();
     let dataClient = [];
     for (let i = 0; i < data.length; i++) {
@@ -322,7 +322,7 @@ export const getAllClientsWhoHaventPaid = async () => {
 
 //2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pedido. 
 export const getAllClientsWhoHaventRequest = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let data = await res.json();
     let dataClient = [];
     for (let i = 0; i < data.length; i++) {
@@ -336,7 +336,7 @@ export const getAllClientsWhoHaventRequest = async () => {
 
 //3. Devuelve un listado que muestre los clientes que no han realizado ningún pago y los que no han realizado ningún pedido. 
 export const getAllClientsWhoHaveNeitherPaidNorRequest = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let data = await res.json();
     let dataClient = [];
     for (let i = 0; i < data.length; i++) {
@@ -351,14 +351,14 @@ export const getAllClientsWhoHaveNeitherPaidNorRequest = async () => {
 
 //obtener cliente por codigo de asesor de ventas
 export const getAllClientsByManagerCode = async (code) => {
-    let res = await fetch("http://172.16.101.146:5531/clients?code_employee_sales_manager=${code}")
+    let res = await fetch("http://172.16.101.146:5471/clients?code_employee_sales_manager=${code}")
     let data = await res.json();
     return data;
 }
 
 //11. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago. 
 export const getAllClientsWhoHaveRequestedButHaventPaid = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let data = await res.json();
     let dataClient = [];
     for (let i = 0; i < data.length; i++) {
@@ -373,7 +373,7 @@ export const getAllClientsWhoHaveRequestedButHaventPaid = async () => {
 
 //Obtener todos los clientes
 export const getAllClients = async () => {
-    let res = await fetch("http://172.16.101.146:5531/clients")
+    let res = await fetch("http://172.16.101.146:5471/clients")
     let data = await res.json();
     return data;
 }

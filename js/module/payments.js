@@ -1,54 +1,66 @@
-import pedidosPorAno from '../utils/index.js'
+// 13 Devuelve un listado con todos los pagos que se realizaron en el 
+// año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
 
-export default async function getPagos() {
-    const response = await fetch("http://localhost:5502/payments")
-    return await response.json()
-};
-
-// 8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
-
-async function getClientesPagosMayorA2008() {
-    const pagos = await getPagos()
-    const pagosEn2008 = []
-    pagos.forEach(pago => {
-        let { code_client, date_payment } = pago
-        if (date_payment.split('-')[0] == "2008") {
-            if (!pagosEn2008.includes(code_client)) {
-                pagosEn2008.push(code_client)
-            }
+export const getallPaymentFromPayPalEachYear = async() =>{
+    let res = await fetch("http://172.16.101.146:5705/payments?payment=PayPal")
+    let data = await res.json();
+    let dataUpdate = [];
+    data.forEach(val => {
+        let { date_payment } = val 
+        let [year] =  date_payment.split("-")
+        if(year == "2008"){
+            dataUpdate.push(val)
         }
-    })
-    console.log(pagosEn2008);
-};
+    });
+    dataUpdate.sort((a, b) => {
+        const dateA = new Date(a.date_payment);
+        const dateB = new Date(b.date_payment);
+        return dateB - dateA;
+    });
 
-// getClientesPagosMayorA2008()
-
-// 13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
-async function getPagosPaypal() {
-    const response = await fetch("http://localhost:5502/payments?payment=PayPal")
-    const pagos = await response.json()
-    const pagosRealizados = pagos.filter(({date_payment}) => pedidosPorAno(date_payment, 2008))
-
-    console.log(pagosRealizados);
+    return dataUpdate
 }
 
-// getPagosPaypal()
+//14.Devuelve un listado con todas las formas de pago que aparecen en 
+//la tabla `pago`. Tenga en cuenta que no deben aparecer formas de pago repetidas.
 
-// 14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
+export const getallPaymentForms = async() =>{
+    let res = await fetch("http://172.16.101.146:5705/payments?payment")
+    let data = await res.json();
+    let getTime = new Set();
 
-async function getFormasDePago() {
-    const pagos = await getPagos()
-    const formasDePago = []
+    data.forEach(val => {
+    
+            let FormasPago = val.payment
+            if (FormasPago ) {
+                let requestInfo = (
+                    FormasPago
+                );
+                getTime.add(requestInfo);
+        
+        
+    }});
 
-    pagos.forEach(pago => {
-        let { payment } = pago
-
-        if (!formasDePago.includes(payment)) {
-            formasDePago.push(payment)
-        }
-    })
-
-    console.log(formasDePago);
+    return getTime;
 }
 
-// getFormasDePago()
+// M.2 Ayuda Devuelve un conjunto con el codigo de cada cliente que hizo un pago 
+export const getallPayClients = async() =>{
+    let res = await fetch("http://172.16.101.146:5705/payments?payment")
+    let data = await res.json();
+    let getTime = new Set();
+
+    data.forEach(val => {
+    
+            let codeClients = val.code_client
+            if (codeClients ) {
+                let requestInfo = (
+                    codeClients
+                );
+                getTime.add(requestInfo);
+           
+        
+    }});
+
+    return getTime;
+}

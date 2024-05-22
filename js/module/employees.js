@@ -1,124 +1,83 @@
-import { 
-    getAllClients 
-} from "./clients.js";
-// 3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe 
-// tiene un código de jefe igual a 7.
-export const getAllEmployeesWithBossAndCodeSeven = async() =>{
-    let res = await fetch("http://localhost:5502/employees?code_boss=7")
-    let data = await res.json();
-    let dataUpdate = [];
-    data.forEach(val => {
-        let [email] = val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)
-        dataUpdate.push({
-            nombre: val.name,
-            apellidos: `${val.lastname1} ${val.lastname2}`,
-            email
-        });
-    });
-    return dataUpdate;
-}
-// 4. Devuelve el nombre del puesto, nombre, apellidos y email del jefe de la 
-// empresa.
-export const getBossFullNameAndEmail = async()=>{
-    let res = await fetch("http://localhost:5502/employees");
-    let data = await res.json();
-    let dataUpdate = {};
-    data.forEach(val => {
-        if(val.code_boss == null){
-            dataUpdate.nombre = val.name
-            dataUpdate.apellidos = `${val.lastname1} ${val.lastname2}`
-            dataUpdate.email = val.email.match(/(?<=\[)[^\[\]]+@[^@\[\]]+(?=\])/)[0]
+import {getEmployeesByCode} from "./employees.js"
+import {getEmployeeCodeByCity} from "./clients.js"
+//1. Devuelve un listado con el codigo de oficina y la ciudad 
+// donde hay oficinas.
+export const getAllOficceAndcodeCity = async () => {
+    let res = await fetch("http://172.16.101.146:5704/offices")
+    let data = await res.json()
+    let dataUpdate = data.map(val => {
+        return {
+            code_office: val.code_office,
+            city: val.city
         }
-    });
+    })
     return dataUpdate;
-}
-//5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados 
-// que no sean representantes de ventas.
-export const getAllEmployeesNotSalesReps = async()=>{
-    let res = await fetch("http://localhost:5502/employees?position_ne=Representante%20Ventas")
-    let data = await res.json();
-    let dataUpdate = [];
-    data.forEach(val => {
-        dataUpdate.push({
-            nombre: val.name,
-            apellidos: `${val.lastname1} ${val.lastname2}`,
-            puesto: val.position
-        })
-    });
-    return dataUpdate;
+
 }
 
+//2. Devuelve un listado con la ciudad y el telefono de las oficinas de España
+export const getAllOficceCityAndMovil = async () => {
+    let res = await fetch("http://172.16.101.146:5704/offices?country=España")
+    let data = await res.json()
+    let dataUpdate = data.map(val => {
+        return {
+            code_office: val.code_office,
+            movil: val.movil
+        }
+    })
+    return dataUpdate;
+}
 
-
-// Obtener la informacion de un empleado por su codigo
-export const getEmployByCode = async(code) =>{
-    let res = await fetch(`http://localhost:5502/employees?employee_code=${code}`);
+// Obtener la informacion de una oficina por su codigo
+export const getOfficesByCode = async(code) =>{
+    let res = await fetch(`http://172.16.101.146:5704/offices?code_office=${code}`);
     let dataClients = await res.json();
     return dataClients;
 }
-// Obtener la informacion de un empleado por su codigo
-export const getAllEmploy = async() =>{
-    let res = await fetch(`http://localhost:5502/employees`);
-    let data = await res.json();
-    return data;
-}
 
+//2.6. Lista la dirección de las oficinas que tengan clientes en `Fuenlabrada`.
+export const getAddressOfficeByClient = async()=>{
+    let dataUpdate = [];
+    let employee = await getEmployeeCodeByCity()
 
-//9. Devuelve un listado que muestre el nombre de cada empleados, 
-// el nombre de su jefe y el nombre del jefe de sus jefe.
-
-export const getAll3 = async()=>{
-    let dataEmployees = await getAllEmploy();
-    for (let i = 0; i < dataEmployees.length; i++) {
-        let {code_boss} = dataEmployees[i]
-        let listBoss = [];
-        if(!code_boss) continue 
-        do{
-            let searchedBoss = async() => await getEmployByCode(code_boss)
-            let [boos] = await searchedBoss()
-            code_boss = boos.code_boss
-            listBoss.push(boos)
-        }while(code_boss)
-        dataEmployees[i].code_boss = listBoss;
+    for (let codeEmployee of employee){
+        let [employeeData] = await getEmployeesByCode(codeEmployee)
+        let [oficina] = await getOfficesByCode(employeeData.code_office)
+        dataUpdate.push({
+            oficina : oficina.code_office,
+            direccionOficina: `${oficina.address1} ${oficina.address2}`
+        })
     }
-    return dataEmployees[29];
+    return dataUpdate
 }
 
-// Consultas multitabla (Composición externa)
-// 12. Devuelve un listado con los datos de los empleados que no 
-// tienen clientes asociados y el nombre de su jefe asociado
+// Función para obtener todas las oficinas
+export const getAllOffices = async () => {
+    // Realizar la solicitud para obtener todas las oficinas
+    const res = await fetch("http://172.16.101.146:5704/offices");
+    const offices = await res.json();
+    return offices;
+};
+//3.10. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas
+// de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
 
-export const getAllEmployNotClients = async()=>{
-    let dataClients = await getAllClients();
-    let dataEmployees = await getAllEmploy();
-    let code_employee_sales_manager = [...new Set(dataClients.map(val => val.code_employee_sales_manager))]
-    let employee_code = dataEmployees.map(val => val.employee_code)
-    let codes = [
-        code_employee_sales_manager,
-        employee_code
-    ]
-    let code = codes.reduce((resultado, array) => resultado.filter(elemento => !array.includes(elemento)).concat(array.filter(elemento => !resultado.includes(elemento))))
-    let employees = []
-    for (let i = 0; i < code.length; i++) {
-        let searchingEmployees = async() => await getEmployByCode(code[i])
-        let [employee] = await searchingEmployees()
-        if(!employee.code_boss) {
-            let {
-                code_boss,
-                ...employeeUpdate
-            } = employee
-            employeeUpdate.name_boss = employee.name;
-            employees.push(employeeUpdate)
-            continue
+
+export const getOfficesWithoutSalesRepresentatives = async () => {
+    // Obtener los representantes de ventas de clientes que hayan comprado productos de la gama Frutales
+    const salesRepresentatives = await getSalesRepresentativesOfFrutalesClients();
+
+    // Obtener todas las oficinas
+    const offices = await getAllOffices();
+
+    // Filtrar las oficinas donde no trabajan los representantes de ventas obtenidos
+    const officesWithoutSalesRepresentatives = offices.filter(office => {
+        for (const representative of salesRepresentatives) {
+            if (office.code_office === representative.code_office) {
+                return false;
+            }
         }
-        let searchedBoss = async() => await getEmployByCode(employee.code_boss)
-        let [boos] = await searchedBoss()
-        let {
-            code_boss,
-            ...employeeUpdate
-        } = employee
-        employeeUpdate.name_boss = boos.name;
-        employees.push(employeeUpdate)
-    }
-    return employees
-}
+        return true;
+    });
+
+    return officesWithoutSalesRepresentatives;
+};

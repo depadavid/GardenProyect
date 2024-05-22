@@ -1,4 +1,3 @@
-import{getallDataEmployeeByCode, getEmployeesByCode } from "./employees.js"
 import {getallPayClients} from "./payments.js"
 import {getOfficesByCode} from "./offices.js"
 import {getAllRequestByTime, getAllRequestByClient} from "./requests.js"
@@ -21,7 +20,8 @@ export const getAllSpainClients = async() => {
     let data = await res.json();
     let dataUpdate = data.map(val =>{ 
         return {
-            name:`${val.contact_name} ${val.contact_lastname} `
+            name:`${val.contact_name} ${val.contact_lastname} `,
+            code : val.client_code,
         }
 })
 return dataUpdate;

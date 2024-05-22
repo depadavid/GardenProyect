@@ -1,9 +1,9 @@
 import { 
-    getAllClientsFromSpainAndRepresentative11Or30, 
-    getClientsEmploy 
+    getAllMadridClients, 
+    getAllSpainClients 
 } from "../module/clients.js";
 import {
-    getAllEmployNotClients 
+    getAllOficceAndcodeCity 
 } from "../module/employees.js";
 
 export class Mycard extends HTMLElement{
@@ -14,8 +14,8 @@ export class Mycard extends HTMLElement{
             <link rel="stylesheet" href="../css/myCard.css">  
         `
     }
-    async getClientsEmployDesign(){
-        let data = await getClientsEmploy();
+    async getAllMadridClientsDesign(){
+        let data = await getAllMadridClients();
         data.forEach(val => {
             this.shadowRoot.innerHTML += /*html*/`
                 <div class="report__card">
@@ -24,7 +24,7 @@ export class Mycard extends HTMLElement{
                     </div>
                     <div class="card__body">
                         <div class="body__marck">
-                            <p><b>Nombre del empleado: </b>${val.name_employee}</p>
+                            <p><b>Codigo del empleado: </b>${val.code_employee_sales_manager}</p>
                             <p><b>Ciudad: </b>${val.city}</p>
                         </div>
                     </div>
@@ -32,48 +32,37 @@ export class Mycard extends HTMLElement{
             `;
         });
     }
-    async getAllClientsFromSpainAndRepresentative11Or30Design(){
-        let data = await getAllClientsFromSpainAndRepresentative11Or30();
+    async getAllSpainClientsDesign(){
+        let data = await getAllSpainClients();
         data.forEach(val => {
             let money = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val.limit_credit);
             this.shadowRoot.innerHTML += /*html*/`
             
                 <div class="report__card">
                     <div class="card__title">
-                        <div>${val.client_name} # ${val.client_code}</div>
+                        <div>${val.code} </div>
                     </div>
                     <div class="card__body">
                         <div class="body__marck">
-                            <p><b>Id: </b> ${val.id}</p>
-                            <p><b>Codigo del empleado: </b>${val.code_employee_sales_manager}</p>
-                            <p><b>Contacto: </b>${val.phone} - ${val.fax}</p>
-                            <p><b>Nombre del representante: </b>${val.contact_name} ${val.contact_lastname}</p>
-                            <p><b>Dirrecion: </b>${val.address1} ${(val.address2) ? val.address2 : ""}</p>
-                            <p><b>Ubicacion: </b>${val.country} ${val.region} ${val.city} ${val.postal_code}</p>
-                            <p><b>Total a prestar: </b>${money}</p>
+                            <p><b>Nombre: </b> ${val.name}</p>
                         </div>
                     </div>
                 </div>
             `;
         });
     }
-    async getAllEmployNotClientsDesign(){
-        let data = await getAllEmployNotClients();
+    async getAllOficceAndcodeCityDesign(){
+        let data = await getAllOficceAndcodeCity();
         data.forEach(val => {
             this.shadowRoot.innerHTML += /*html*/`
             
                 <div class="report__card">
                     <div class="card__title">
-                        <div>${val.name} ${val.lastname1} ${val.lastname2} # ${val.employee_code}</div>
+                        <div>${val.code_office} </div>
                     </div>
                     <div class="card__body">
                         <div class="body__marck">
-                            <p><b>Id: </b> ${val.id}</p>
-                            <p><b>Cargo: </b>${val.position}</p>
-                            <p><b>Oficina: </b>${val.code_office}</p>
-                            <p><b>Jefe encargado: </b>${val.name_boss}</p>
-                            <p><b>Numero de extencion: </b>${val.extension}</p>
-                            <p><b>Correo electronico: </b>${val.email}</p>
+                            <p><b>City: </b> ${val.kelly}</p>
                         </div>
                     </div>
                 </div>
@@ -84,8 +73,8 @@ export class Mycard extends HTMLElement{
         return ["logic"];
     }
     attributeChangedCallback(name, old, now) {
-        if(name=="logic" && now=="client_6") this.getClientsEmployDesign()
-        if(name=="logic" && now=="client_16") this.getAllClientsFromSpainAndRepresentative11Or30Design()
-        if(name=="logic" && now=="employ_12") this.getAllEmployNotClientsDesign()
+        if(name=="logic" && now=="client_6") this.getAllMadridClientsDesign()
+        if(name=="logic" && now=="client_16") this.getAllSpainClientsDesign()
+        if(name=="logic" && now=="employ_12") this.getAllOficceAndcodeCityDesign()
     }
 }

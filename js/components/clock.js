@@ -5,6 +5,6 @@ export const updateClock = () => {
     const seconds = String(now.getSeconds()).padStart(2, "0");
     return `ID ${hours}:${minutes}:${seconds} /`;
 }
-setInterval(()=>{
+setInterval(() => {
     document.querySelector("#clock").innerText = updateClock();
 }, 1000);
